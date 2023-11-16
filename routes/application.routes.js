@@ -40,7 +40,7 @@
  *                 __v: 0
  *
  *       422:
- *         description: Error en la solicitud. Verifica los datos proporcionados.
+ *         description: "Error: Unprocessable Entity"
  *         content:
  *           application/json:
  *             example:
@@ -54,7 +54,7 @@
  */
 
 const router = require("express").Router();
-const { applicationSchema } = require("../schemas/schemas");
+const { applicationSchema } = require("../schemas");
 const validateData = require("../middleware/validateData");
 const controller = require("../controllers/application.controller");
 const prefix = "/application";
