@@ -49,8 +49,10 @@ const prefix = "/authorization";
  *         description: "Error: Unprocessable Entity"
  *         content:
  *           application/json:
- *             example:
- *               error: "\"application_id\" is required"
+ *              example:
+ *                  errors:
+ *                     field: "application_id"
+ *                     message: "\"application_id\" is required"
  *       500:
  *         description: Error interno del servidor.
  *         content:

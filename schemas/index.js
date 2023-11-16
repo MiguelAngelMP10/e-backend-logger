@@ -15,6 +15,19 @@ const logsCreateSchema = Joi.object({
   }),
 });
 
+const logsUpdateSchema = Joi.object({
+  type: Joi.string().valid("error", "info", "warning"),
+  priority: Joi.string().valid("lowest", "low", "medium", "high", "highest"),
+  path: Joi.string(),
+  message: Joi.string(),
+  request: Joi.object({
+    data: Joi.any(),
+  }),
+  response: Joi.object({
+    data: Joi.any(),
+  }),
+});
+
 const applicationSchema = Joi.object({
   name: Joi.string().required(),
 });
@@ -23,4 +36,9 @@ const authorizationSchema = Joi.object({
   application_id: Joi.string().required(),
 });
 
-module.exports = { applicationSchema, authorizationSchema, logsCreateSchema };
+module.exports = {
+  applicationSchema,
+  authorizationSchema,
+  logsCreateSchema,
+  logsUpdateSchema,
+};

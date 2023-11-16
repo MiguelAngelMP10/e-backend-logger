@@ -17,7 +17,7 @@
 const router = require("express").Router();
 const auth = require("../middleware/auth");
 const prefix = "/logs";
-const { logsCreateSchema } = require("../schemas");
+const { logsCreateSchema, logsUpdateSchema } = require("../schemas");
 const validateData = require("../middleware/validateData");
 
 const controller = require("../controllers/logs.controller");
@@ -183,15 +183,33 @@ router.get(`${prefix}/`, auth, controller.all);
  *                 created_at: "2023-11-16T18:23:43.453Z"
  *                 updated_at: "2023-11-16T18:23:43.456Z"
  *                 __v: 0
-
- * 
+ *
  *       400:
  *         $ref: '#/components/responses/Error400'
+ *       422:
+ *         description: "Error: Unprocessable Entity"
+ *         content:
+ *           application/json:
+ *              example:
+ *                  errors:
+ *                   - field: type
+ *                     message: "\"type\" is required"
+ *                   - field: priority
+ *                     message: "\"priority\" is required"
+ *                   - field: path
+ *                     message: "\"path\" is required"
+ *                   - field: message
+ *                     message: "\"message\" is required"
+ *                   - field: type
+ *                     message: "\"type\" must be one of [error, info, warning]"
+ *                   - field: priority
+ *                     message: "\"priority\" must be one of [lowest, low, medium, high, highest]"
+ *
  *       403:
  *         $ref: '#/components/responses/Error403'
  *       500:
  *         $ref: '#/components/responses/Error500'
- *        
+ *
  */
 router.post(
   `${prefix}/`,
@@ -346,10 +364,25 @@ router.get(`${prefix}/:id`, auth, controller.info);
  *         $ref: '#/components/responses/Error403'
  *       404:
  *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         description: "Error: Unprocessable Entity"
+ *         content:
+ *           application/json:
+ *              example:
+ *                  errors:
+ *                   - field: type
+ *                     message: "\"type\" must be one of [error, info, warning]"
+ *                   - field: priority
+ *                     message: "\"priority\" must be one of [lowest, low, medium, high, highest]"
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
-router.put(`${prefix}/:id`, auth, controller.update);
+router.put(
+  `${prefix}/:id`,
+  auth,
+  validateData(logsUpdateSchema),
+  controller.update
+);
 
 /**
  * @swagger

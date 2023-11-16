@@ -43,8 +43,11 @@
  *         description: "Error: Unprocessable Entity"
  *         content:
  *           application/json:
- *             example:
- *               "error": "\"name\" is required"
+ *              example:
+ *                  errors:
+ *                     field: "name"
+ *                     message: "\"name\" is required"
+ *                      
  *       500:
  *         description: Error interno del servidor.
  *         content:
