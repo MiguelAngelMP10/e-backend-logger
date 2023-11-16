@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
+const timestampSchema = require("./TimestampSchema");
 
 const applicationSchema = new mongoose.Schema({
-  name: String
+  name: String,
+  ...timestampSchema,
 });
 
 const Application = mongoose.model("Application", applicationSchema);
