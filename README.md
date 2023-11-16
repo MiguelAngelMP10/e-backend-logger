@@ -19,7 +19,7 @@ git clone https://github.com/MiguelAngelMP10/e-backend-logger.git
  npm install
 ```
 
-### Cuarto paso: crear archivo .env con el siguinete comando 
+### Cuarto paso: crear archivo .env con el siguiente comando 
 
 ```bash
     cp .env-example .env
