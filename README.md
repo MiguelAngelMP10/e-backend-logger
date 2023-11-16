@@ -1,8 +1,6 @@
 # Tendencys Innovations | Caso Prueba Técnica Vacante Desarrollador Back End
 
 
-Este repositorio 
-
 ## Instalación
 ### Primer paso: clonar el repositorio 
 
