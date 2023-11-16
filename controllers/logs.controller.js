@@ -8,7 +8,9 @@ class LogsController {
 
   async all(req, res, next) {
     try {
-      const logs = await Log.find();
+      const logs = await Log.find({
+        application_id: req.token_decoded.application_id,
+      });
       res.json({ message: "Todos los registros de logs.", data: logs });
     } catch (error) {
       console.error("Error:", error);
@@ -18,7 +20,10 @@ class LogsController {
 
   async create(req, res, next) {
     try {
-      const nuevoLog = new Log(req.body);
+      let application_id = req.token_decoded.application_id;
+
+      const nuevoLog = new Log({ ...req.body, application_id });
+
       const logGuardado = await nuevoLog.save();
       res
         .status(201)
@@ -32,7 +37,9 @@ class LogsController {
   async info(req, res, next) {
     try {
       const id = req.params.id;
-      const log = await Log.findById(id);
+      let application_id = req.token_decoded.application_id;
+
+      const log = await Log.findOne({ _id: id, application_id });
 
       // Verificar si se encontró el registro de log
       if (!log) {
@@ -52,9 +59,11 @@ class LogsController {
     try {
       // Obtener el ID del registro de log a actualizar
       const logId = req.params.id;
+      
+      let application_id = req.token_decoded.application_id;
 
       const updatedLog = await Log.findOneAndUpdate(
-        { _id: logId },
+        { _id: logId, application_id },
         { $set: req.body },
         { new: true } // Para devolver el documento actualizado
       );
@@ -81,7 +90,10 @@ class LogsController {
       const logId = req.params.id;
 
       // Verificar si el registro de log existe
-      const log = await Log.findById(logId);
+      let application_id = req.token_decoded.application_id;
+
+      const log = await Log.findOne({ _id: logId, application_id });
+
       if (!log) {
         return res
           .status(404)
@@ -89,7 +101,7 @@ class LogsController {
       }
 
       // Eliminar el registro de log de la base de datos
-      await Log.deleteOne({ _id: logId });
+      await Log.deleteOne({ _id: logId, application_id });
 
       // Enviar una respuesta JSON indicando que el registro se eliminó correctamente
       res
