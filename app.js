@@ -3,17 +3,23 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const cors = require('cors');
+const cors = require("cors");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./doc/swagger");
-
 
 const app = express();
 app.use(cors());
 
 // Configura Swagger UI
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    security: [{ JWT: [] }],
+  })
+);
 
 app.use(logger("dev"));
 app.use(express.json());
