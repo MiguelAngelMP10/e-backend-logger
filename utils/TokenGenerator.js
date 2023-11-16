@@ -20,7 +20,7 @@ class TokenGenerator {
      * Tiempo de expiración del token JWT (por defecto, 1 hora).
      * @type {string}
      */
-    this.tokenExpiration = "1h";
+    this.tokenExpiration = "7d";
   }
 
   /**
