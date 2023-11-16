@@ -4,7 +4,7 @@
  * @swagger
  * components:
  *  securitySchemes:
- *   bearerAuth:         
+ *   bearerAuth:
  *     type: http
  *     scheme: bearer
  *     bearerFormat: JWT
@@ -17,6 +17,8 @@
 const router = require("express").Router();
 const auth = require("../middleware/auth");
 const prefix = "/logs";
+const { logsCreateSchema } = require("../schemas");
+const validateData = require("../middleware/validateData");
 
 const controller = require("../controllers/logs.controller");
 
@@ -50,7 +52,7 @@ const controller = require("../controllers/logs.controller");
  *         application/json:
  *           example:
  *              message: "Internal Server Error."
- * 
+ *
  */
 
 /**
@@ -69,7 +71,7 @@ const controller = require("../controllers/logs.controller");
  *           application/json:
  *             example:
  *               message: "Registros de logs obtenidos correctamente."
- *               data: 
+ *               data:
  *                 - _id: "65563779871738cabfdd3a2b"
  *                   application_id: "6556375a871738cabfdd3a26"
  *                   type: "info"
@@ -97,14 +99,14 @@ const controller = require("../controllers/logs.controller");
  *                   response:
  *                     data:
  *                       result: "success"
- * 
+ *
  *       400:
  *         $ref: '#/components/responses/Error400'
  *       403:
  *         $ref: '#/components/responses/Error403'
  *       500:
  *         $ref: '#/components/responses/Error500'
- *        
+ *
  */
 router.get(`${prefix}/`, auth, controller.all);
 
@@ -191,8 +193,12 @@ router.get(`${prefix}/`, auth, controller.all);
  *         $ref: '#/components/responses/Error500'
  *        
  */
-router.post(`${prefix}/`, auth, controller.create);
-
+router.post(
+  `${prefix}/`,
+  auth,
+  validateData(logsCreateSchema),
+  controller.create
+);
 
 /**
  * @swagger
@@ -344,7 +350,6 @@ router.get(`${prefix}/:id`, auth, controller.info);
  *         $ref: '#/components/responses/Error500'
  */
 router.put(`${prefix}/:id`, auth, controller.update);
-
 
 /**
  * @swagger
